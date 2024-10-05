@@ -19,10 +19,21 @@ namespace EventManagementDB.DOMAIN.Infraestructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            var attendee = await _dbContext.Attendees.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (attendee == null)
+                return false;
+
+            _dbContext.Attendees.Remove(attendee);
+            int rows = await _dbContext.SaveChangesAsync();
+            return rows > 0;
+        }
+
         public async Task<IEnumerable<Attendees>> GetOrganizers()
         {
-            var attendees = await _dbContext.Attendees.ToListAsync();
-            return attendees;
+            return await _dbContext.Attendees.ToListAsync();
         }
 
         public async Task<int> Insert(Attendees attendee)
@@ -32,26 +43,10 @@ namespace EventManagementDB.DOMAIN.Infraestructure.Repositories
             return rows > 0 ? attendee.Id : -1;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<Attendees> GetById(int id)
         {
-            var attendee = await _dbContext.Attendees.FirstOrDefaultAsync(c => c.Id == id);
-
-            if (attendee == null)
-                return false;
-
-            _dbContext.Attendees.Remove(attendee);
-
-            try
-            {
-                int rows = await _dbContext.SaveChangesAsync();
-                return rows > 0;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-
+            return await _dbContext.Attendees.FirstOrDefaultAsync(a => a.Id == id);
         }
+
     }
 }

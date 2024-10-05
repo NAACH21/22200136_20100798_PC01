@@ -1,4 +1,6 @@
+using EventManagementDB.DOMAIN.Core.Interfaces;
 using EventManagementDB.DOMAIN.Infraestructure.Data;
+using EventManagementDB.DOMAIN.Infraestructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,7 @@ builder.Services
     (options => options.UseSqlServer(cnx));
 
 builder.Services.AddControllers();
+builder.Services.AddTransient<IAttendeesRepository, AttendeesRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

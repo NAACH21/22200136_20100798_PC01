@@ -7,5 +7,7 @@ namespace EventManagementDB.DOMAIN.Core.Interfaces
         Task<bool> Delete(int id);
         Task<IEnumerable<Attendees>> GetOrganizers();
         Task<int> Insert(Attendees attendee);
+        Task<Attendees> GetById(int id); 
     }
+
 }
