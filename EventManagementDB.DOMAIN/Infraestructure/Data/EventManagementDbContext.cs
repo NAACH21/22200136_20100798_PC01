@@ -77,11 +77,10 @@ public partial class EventManagementDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Organize__3214EC0717C839BC");
 
-            entity.Property(e => e.ContactEmail).HasMaxLength(100);
-            entity.Property(e => e.CreatedAt)
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.RegisteredAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.OrganizerName).HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
         });
 

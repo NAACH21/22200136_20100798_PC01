@@ -31,7 +31,7 @@ namespace EventManagementDB.DOMAIN.Infraestructure.Repositories
             return rows > 0;
         }
 
-        public async Task<IEnumerable<Attendees>> GetOrganizers()
+        public async Task<IEnumerable<Attendees>> GetAttendees()
         {
             return await _dbContext.Attendees.ToListAsync();
         }

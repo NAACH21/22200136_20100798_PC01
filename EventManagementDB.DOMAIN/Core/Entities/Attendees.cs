@@ -16,4 +16,6 @@ public partial class Attendees
     public DateTime? RegisteredAt { get; set; }
 
     public virtual ICollection<EventAttendance> EventAttendance { get; set; } = new List<EventAttendance>();
+
+    public virtual ICollection<Events> Events { get; set; } = new List<Events>();
 }

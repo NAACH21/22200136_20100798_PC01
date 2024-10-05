@@ -1,46 +1,37 @@
-﻿using EventManagementDB.DOMAIN.Core.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using EventManagementDB.DOMAIN.Core.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using EventManagementDB.DOMAIN.Core.Entities;
 
-namespace _22200136_20100798_PC01.Controllers
+namespace EventManagementDB.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AttendeesControler : ControllerBase
+    public class AttendeesController : ControllerBase
     {
-        private readonly IAttendeesRepository _attendeesRepository;
+        private readonly IAttendeesRepository _repository;
 
-        public AttendeesControler(IAttendeesRepository attendeesRepository)
+        public AttendeesController(IAttendeesRepository repository)
         {
-            _attendeesRepository = attendeesRepository;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Insert(Attendees attendee)
-        {
-            int attendeId = await _attendeesRepository.Insert(attendee);
-            return Ok(attendeId);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            bool result = await _attendeesRepository.Delete(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            _repository = repository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOrganizers()
+        public async Task<ActionResult<IEnumerable<Attendees>>> GetAttendees()
         {
-            IEnumerable<Attendees> attendees = await _attendeesRepository.GetOrganizers();
-            return Ok(attendees);
+            return Ok(await _repository.GetAttendees());
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Attendees>> CreateAttendee(Attendees attendee)
+        {
+            var id = await _repository.Insert(attendee);
+            return CreatedAtAction(nameof(_repository.GetById), new { id }, attendee);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteAttendee(int id)
+        {
+            return await _repository.Delete(id);
+        }
     }
 }
